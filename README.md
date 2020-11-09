@@ -1,4 +1,4 @@
-## Introduction
+# TruthTabler: Formal Deductive Logic Analyzer
 TruthTabler is a Java console app for analyzing formal deductive argument logic. The current version provides an interactive console that allows the user to set logical propositions and test expressions made up of these propositions and the logical symbols ≡, ⊃, &, and v as well as the grouping symbols ( and ) and the negation operator ~. The usage of these is specified below under the Syntax Guidelines section.
 
 ## Installation
