@@ -1,3 +1,13 @@
+/*
+Copyright 2020 Alex Mous
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 import java.util.*;
 
 public class TruthTabler {
@@ -18,39 +28,6 @@ public class TruthTabler {
             }
         }
     }
-
-    /*
-Syntax and Interpreter Documentation
-    Syntax Guidelines:
-        Expressions and symbols MUST be in the correct syntax and order or else the interpreter may not generate expected results.
-
-        The symbol ~ may be used to represent logical negation. This symbol may only be used in front of:
-            a) Simple single letter propositions (such as "~A")
-            b) Expression groups (such as "~(AvB)")
-
-        The group symbols "(" and ")" must be used together in pairs and contain at least one proposition or expression such as:
-            a) "(~AvB)"
-            b) "((AvB)&~(A&B))"
-
-        The operator symbols are ≡, ⊃, &, and v and stand for biconditional, conditional, AND and OR, respectively. These may be used as such:
-            a) "A≡B"
-            b) "Av(B&~C)"
-
-        These operator symbols can be used with no more and no fewer than two operands, which may consist of:
-            a) Simple single letter propositions (such as "A")
-            b) Negated simple single letter propositions (such as "~A")
-            c) Expression groups (such as "(AvB)")
-            d) Negated expression groups (such as "~(AvB)")
-
-         The symbol = is used for assigning single letter propositions, such as:
-            a) "A=T" will set A to be true
-            b) "B=F" will set B to be false
-
-     Interpreter usage:
-        All propositions must be declared before trying to evaluate any expressions.
-        Failure to do this will result in an error.
-        Any incorrect syntax may also lead to an error or hung up program, so please ensure that your parentheses match and are using only legal operators.
-     */
 
 
     /**
