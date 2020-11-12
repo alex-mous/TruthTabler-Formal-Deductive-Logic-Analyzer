@@ -186,10 +186,11 @@ public class TruthTabler {
                     res += " " + (propMap.get(key) ? "T" : "F") + " ║";
                     k--;
                 }
+                res += "║";
                 if (expr.length() > 1) { //Larger than single letter proposition
-                    res += String.format(" %" + (expr.length()+1)/2 + "s%" + (expr.length()/2) + "s ║", (rootNode.evaluate(propMap) ? "T" : "F"), ""); //Pad string correctly so that centered
+                    res += String.format(" %" + (expr.length()+1)/2 + "s%" + (expr.length()/2) + "s ║", (rootNode.evaluate(propMap) ? "T" : "F"), "") + "\n"; //Pad string correctly so that centered
                 } else {
-                    res += String.format(" %s ║", (rootNode.evaluate(propMap) ? "T" : "F"));
+                    res += String.format(" %s ║", (rootNode.evaluate(propMap) ? "T" : "F")) + "\n";
                 }
                 if (i<Math.pow(2,propMap.size())-1) { //Middle loops
                     res += getLine('║','║','═','╬', args, dividers);
