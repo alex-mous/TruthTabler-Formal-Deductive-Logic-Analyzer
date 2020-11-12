@@ -1,17 +1,22 @@
 # TruthTabler: Formal Deductive Logic Analyzer
-TruthTabler is a Java console app for analyzing formal deductive argument logic. The current version provides an interactive console that allows the user to set logical propositions and test expressions made up of these propositions and the logical symbols ≡, ⊃, &, and v as well as the grouping symbols ( and ) and the negation operator ~. The usage of these is specified below under the Syntax Guidelines section.
+TruthTabler is a Java console app for analyzing formal deductive argument logic. 
+This app provides a way for the user to evaluate truth tables of arguments to determine
+ validity, evaluate truth tables of simple or complex logical expressions to determine their 
+ truth based on that of their propositions, and an expression calculator to calculate the 
+ truth value of a single expression based on the value of its propositions. The logical 
+symbols ≡, ⊃, &, and v as well as the grouping symbols ( and ) and the negation operator ~.
+ The usage of these is specified below under the Syntax Guidelines section, and how to use the different modes
+ is specified under Usage.
 
 ## Installation
-The source code for IntelliJ is provided. The code release binaries are also available under Releases.
+The source code for IntelliJ is provided. Code binaries under Releases soon to be provided.
 
 ## Usage
-Once the code is running, set propositions as follows:
-`A=T` would set assign a True value to A, and `B=F` would assign a False value to B. Propositions are allowed to be reassigned later during runtime. To evaluate expressions, simply enter a valid expression as detailed under Syntax Guidlines such as: `(AvB)&~(A&B)`, which is the exclusive OR and therefore should return a True value for the values of A and B that we set earlier.
-
-*All propositions must be declared before trying to evaluate any expressions.
-Failure to do this will result in an error.
-Any incorrect syntax may also lead to an error or hung up program, so please ensure that your parentheses match and are using only legal operators.*
-
+Once the code is running, you will be presented with a menu of modes to choose from. The available modes are argument mode, expression table mode, or expression calculator mode.
+Argument mode is for evaluating arguments (in the form of a list of premises and conclusion) in a truth table to determine validity (done automatically). Expression table mode is 
+similar to argument mode but only allows for one expression and doesn't determine validity. Finally, expression calculator mode allows the user
+to calculate various truth values of an expression based on the truth of its propositions. Please use the help command ($h) for guidelines on the exact usage
+of each mode.
 ### **Syntax Guidelines**
 1.   Expressions and symbols MUST be in the correct syntax and order or else the interpreter may not generate expected results.
 1.  The symbol ~ may be used to represent logical negation. This symbol may only be used in front of:
