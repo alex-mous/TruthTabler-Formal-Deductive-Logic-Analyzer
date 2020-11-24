@@ -9,7 +9,7 @@ symbols ≡, ⊃, &, and v as well as the grouping symbols ( and ) and the negat
  is specified under Usage.
 
 ## Installation
-The source code for IntelliJ is provided. Code binaries under Releases soon to be provided.
+The source code for IntelliJ is provided. Windows executable file also provided under Releases for the latest version.
 
 ## Usage
 Once the code is running, you will be presented with a menu of modes to choose from. The available modes are argument mode, expression table mode, or expression calculator mode.
