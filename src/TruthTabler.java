@@ -11,6 +11,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 import java.util.*;
 
 public class TruthTabler {
+    private static final String VALID_SYMBOL_REGEX = "^[\\(\\)~&v≡:>⊃(A-Z)]+$";
+
     public static void main(String[] args) { //Console interaction
         if (args.length > 0) {
             runArguments(args);
@@ -107,23 +109,25 @@ public class TruthTabler {
         Map<Character, Boolean> propMap = new HashMap<>(); //Map for propositions (used in c mode)
         char mode = 'c'; //Default to calculator mode
         printConsoleInfo();
+        printHelp(mode); //Print out help for default mode
         while (true) {
             System.out.print("(" + mode + ") > ");
             String expr = stdin.next();
             if (expr.equalsIgnoreCase("$q")) { //Exit on q
                 break;
             } else if (expr.equalsIgnoreCase("$h")) { //Print help
-                printHelp();
+                printHelp(mode); //Print out mode help
+                printHelp('\0'); //Then, print out default help
             } else if (expr.equalsIgnoreCase("$c")) { //Expression calculator mode
                 mode = 'c';
+                printHelp(mode);
                 propMap = new HashMap<>(); //Reset propMap
-                System.out.println("Switching to expression calculator mode...");
             } else if (expr.equalsIgnoreCase("$e")) { //Expression truth table mode
                 mode = 'e';
-                System.out.println("Switching to expression truth table mode...");
+                printHelp(mode);
             } else if (expr.equalsIgnoreCase("$a")) { //Argument evaluation/truth table mode
                 mode = 'a';
-                System.out.println("Switching to argument evaluation/truth table mode...");
+                printHelp(mode);
             } else { //Run appropriate function based on mode
                 switch (mode) {
                     case 'a': //Argument
@@ -147,7 +151,7 @@ public class TruthTabler {
      * @return String message
      */
     public static String runExpressionTable(String expr) {
-        if (expr.matches("^[\\(\\)\\~\\&v\\≡\\⊃(A-Z)]+$")){ //Otherwise, test that the expression matches a logical one and evaluate it
+        if (expr.matches(VALID_SYMBOL_REGEX)) { //Otherwise, test that the expression matches a logical one and evaluate it
             //First, build a map of propositions with all true values
             Map<Character, Boolean> propMap = new LinkedHashMap<>(); //Linked hash map to preserve key order
             for (Character c: expr.toCharArray()) { //Iterate over each character
@@ -211,7 +215,7 @@ public class TruthTabler {
      * @return String message
      */
     public static String runArgumentTable(String expr) {
-        if (expr.matches("^[\\(\\)\\~\\&v\\≡\\⊃(A-Z),]+$")){ //Otherwise, test that the expression matches a logical one and evaluate it
+        if (expr.matches("^[\\(\\)\\~\\&v≡>⊃(A-Z),]+$")){ //Otherwise, test that the expression matches a logical one and evaluate it
             String[] argument = expr.split(",");
 
             //First, build a map of propositions with all true values
@@ -351,7 +355,7 @@ public class TruthTabler {
             }
             propMap.put(expr.charAt(0), expr.toLowerCase().charAt(2) == 't');
             return "";
-        } else if (expr.matches("^[\\(\\)\\~\\&v\\≡\\⊃(A-Z)]+$")){ //Otherwise, test that the expression matches a logical one and evaluate it
+        } else if (expr.matches(VALID_SYMBOL_REGEX)){ //Otherwise, test that the expression matches a logical one and evaluate it
             try {
                 LogicNode rootNode = buildTree(expr); //Parse expression into a form of binary tree
                 if (rootNode == null) { //Ensure that the expression evaluated correctly
@@ -372,31 +376,48 @@ public class TruthTabler {
     public static void printConsoleHelp() {
         System.out.println("TruthTabler - Formal Logic Expression and Argument Truth Table Evaluator\n" +
                 "Version 1.1.0\n\n");
-        printHelp();
+        printHelp('\0');
     }
 
     /**
      * Print out the help information
      */
-    public static void printHelp() {
-        System.out.println(
-            "Usage:\n\t" +
-            "Enter an expression, command, argument, or proposition\n" +
-            "\tCommands:\n" +
-            "\t\t$h (this help)\n" +
-            "\t\t$q (quit)\n" +
-            "\tExpressions:\n" +
-            "\t\tMust only contain defined propositions and valid logical symbols\n" +
-            "\t\tValid logical symbols are limited to ( and ) for grouping, v for OR, & for AND, ≡ for biconditional, ⊃ for conditional, and ~ for NOT\n" +
-            "\t\tGrouping symbols ( and ) must be used so that each operator (excluding ~) has no more and no less than two operands (for example, (P&Q)&R is valid, but P&Q&R is not)\n" +
-            "\t\tNegation ~ may be used before groups or propositions, but never before another operator (for example, ~P&Q and ~(PvQ)&R are valid, but P~&Q is not)\n" +
-            "\tArguments:\n" +
-            "\t\tEnter a list of premises (expressions as detailed above) separated by commas. Append the conclusion to this list with another comma as a separator following the same principles for expressions as above\n" +
-            "\tPropositions:\n" +
-            "\t\tUse '=' to defined a proposition to T/F\n" +
-            "\t\tPropositions must be single letters (such as p or Q), and are case sensitive" +
-            "\t\tPropositions may be redeclared later on during runtime"
-        );
+    public static void printHelp(char mode) {
+        switch (mode) {
+            case 'c':
+                System.out.println("Expression calculator mode. Calculate expression truth values using defined propositons. Usage:\n" +
+                        "\tSet propositions using the syntax [A-Z]=[T/F] to set a proposition letter A to Z to either True or False\n" +
+                        "\tEvaluate expressions (only containing propositions set with above method and valid symbols), such as 'Av(B&C)'");
+                break;
+            case 'a':
+                System.out.println("Argument calculator mode. Print argument truth tables and determine validity. Usage:\n" +
+                        "\tEnter premises and conclusion as a comma-separated list, such as 'AvB,B>A,B&A'");
+                break;
+            case 'e':
+                System.out.println("Expression table mode. Print expression truth table. Usage:\n" +
+                        "\tEnter expressions only containing proposition letters and valid symbols, such as 'Av(B&C)'");
+                break;
+            default: //Default help
+                System.out.println(
+                        "Usage:\n\t" +
+                                "Enter an expression, command, argument, or proposition\n" +
+                                "\tCommands:\n" +
+                                "\t\t$h (this help)\n" +
+                                "\t\t$q (quit)\n" +
+                                "\tExpressions:\n" +
+                                "\t\tMust only contain defined propositions and valid logical symbols\n" +
+                                "\t\tValid logical symbols are limited to ( and ) for grouping, v for OR, & for AND, ≡ or : for biconditional, ⊃ or > for conditional, and ~ for NOT\n" +
+                                "\t\tGrouping symbols ( and ) must be used so that each operator (excluding ~) has no more and no less than two operands (for example, (P&Q)&R is valid, but P&Q&R is not)\n" +
+                                "\t\tNegation ~ may be used before groups or propositions, but never before another operator (for example, ~P&Q and ~(PvQ)&R are valid, but P~&Q is not)\n" +
+                                "\tArguments:\n" +
+                                "\t\tEnter a list of premises (expressions as detailed above) separated by commas. Append the conclusion to this list with another comma as a separator following the same principles for expressions as above\n" +
+                                "\tPropositions:\n" +
+                                "\t\tUse '=' to defined a proposition to T/F\n" +
+                                "\t\tPropositions must be single letters (such as p or Q), and are case sensitive" +
+                                "\t\tPropositions may be redeclared later on during runtime"
+                );
+        }
+
     }
 
     /**
@@ -405,7 +426,7 @@ public class TruthTabler {
     public static void printConsoleInfo() {
         System.out.println(
             "TruthTabler - Formal Logic Expression and Argument Truth Table Evaluator\n" +
-            "Version 1.1.0\n\n" +
+            "Version 1.2.0\n\n" +
             "Copyright 2020 Alex Mous\n" +
             "Permission is hereby granted, free of charge, to any person obtaining a copy\n" +
             "of this software and associated documentation files (the \"Software\"), to deal\n" +
@@ -424,7 +445,14 @@ public class TruthTabler {
             "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n" +
             "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n" +
             "SOFTWARE.\n\n" +
-            "Interactive Prompt\nUse $h for help, $q to quit, $a for argument mode, $e for expression table mode or $c for expression calculator (default)"
+            "*** Interactive Prompt ***" +
+                    "\nCommands:\n\t$h for help\n\t$q to quit\n" +
+                    "\t$c for expression calculator mode (default)\n" +
+                    "\t$a for argument evaluation mode\n" +
+                    "\t$e for expression table mode\n\n" +
+                    "Valid symbols:\n\tGrouping: '(' and ')'\n\tNegation: '~'\n" +
+                    "\tConjunction: '&'\n\tConditional: '⊃' or '>'\n\tDisjunction: 'v'\n" +
+                    "\tBiconditional: '≡' or ':'\n\tPropositions: letters 'A'-'Z'\n"
         );
     }
 

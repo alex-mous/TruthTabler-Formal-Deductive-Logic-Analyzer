@@ -95,8 +95,10 @@ public class LogicNode {
                 return propA || propB;
             case '&': //Logical AND
                 return propA && propB;
+            case '>': //Alternate THEN
             case '⊃': //Logical THEN (conditional)
                 return !propA || propB;
+            case ':': //Alternate EQUALS
             case '≡': //Logical EQUALS (biconditional)
                 return propA == propB;
             default:
